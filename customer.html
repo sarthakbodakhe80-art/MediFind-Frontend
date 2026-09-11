@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Dashboard - MediFind</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav>
+
+            <div class="logo">💊 MediFind</div>
+
+            <div>
+                <a href="index.html">Home</a>
+                <a href="search.html">Search Medicine</a>
+                <a href="customer.html">Dashboard</a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- Customer Dashboard -->
+    <section class="customer-section">
+
+        <div class="customer-header">
+
+            <div class="customer-icon">👤</div>
+
+            <h1>Customer Dashboard</h1>
+
+            <p>
+                Find medicines and nearby pharmacies easily.
+            </p>
+
+        </div>
+
+
+        <!-- Dashboard Options -->
+        <div class="customer-options">
+
+
+            <!-- Search Medicine -->
+            <div class="customer-card">
+
+                <div class="customer-card-icon">🔎</div>
+
+                <h2>Search Medicine</h2>
+
+                <p>
+                    Check medicine availability at nearby pharmacies.
+                </p>
+
+                <a href="search.html" class="dashboard-button">
+                    Search Now
+                </a>
+
+            </div>
+
+
+            <!-- Find Pharmacy -->
+            <div class="customer-card">
+
+                <div class="customer-card-icon">🏪</div>
+
+                <h2>Find Pharmacy</h2>
+
+                <p>
+                    View pharmacies and available medicines.
+                </p>
+
+                <a href="pharmacies.html" class="dashboard-button">
+                    Find Pharmacy
+                </a>
+
+            </div>
+
+
+            <!-- Get Directions -->
+            <div class="customer-card">
+
+                <div class="customer-card-icon">📍</div>
+
+                <h2>Get Directions</h2>
+
+                <p>
+                    Find directions to a selected pharmacy.
+                </p>
+
+                <a href="pharmacies.html" class="dashboard-button">
+                    View Pharmacies
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-logo">
+            💊 MediFind
+        </div>
+
+        <p>Medicine Availability System</p>
+
+        <p class="copyright">
+            © 2026 MediFind. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- Customer Name -->
+<script>
+
+    // Check if customer has successfully logged in
+    const userType = localStorage.getItem("userType");
+    const userId = localStorage.getItem("userId");
+
+    if (userType !== "customer" || !userId) {
+
+        alert("Please login first.");
+
+        window.location.href = "login.html";
+
+    } else {
+
+        const userName = localStorage.getItem("userName");
+
+        if (userName) {
+
+            const heading =
+                document.querySelector(".customer-header h1");
+
+            heading.textContent =
+                `Welcome, ${userName} 👋`;
+
+        }
+
+    }
+
+</script>
+
+</body>
+
+</html>

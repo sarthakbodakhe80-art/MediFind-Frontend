@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediFind - Medicine Availability System</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+
+        <nav>
+
+            <div class="logo">
+                💊 MediFind
+            </div>
+
+            <div>
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="search.html">
+                    Search Medicine
+                </a>
+
+                <a href="pharmacies.html">
+                    Find Pharmacy
+                </a>
+
+                <a href="#about">
+                    About
+                </a>
+
+                <!-- Login Button -->
+                <a href="login.html">
+                    Login
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <h1>
+            Find Your Medicine
+        </h1>
+
+        <p>
+            Check medicine availability at nearby pharmacies
+            quickly and easily.
+        </p>
+
+
+        <!-- Main Buttons -->
+
+        <div style="margin: 20px 0;">
+
+            <a
+                href="search.html"
+                class="hero-button"
+            >
+                🔍 Search Medicine
+            </a>
+
+
+            <a
+                href="pharmacies.html"
+                class="hero-button"
+                style="margin-left: 10px;"
+            >
+                🏪 Find Pharmacy
+            </a>
+
+        </div>
+
+
+        <!-- Quick Search -->
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="medicineInput"
+                placeholder="Enter medicine name..."
+                list="medicineList"
+                autocomplete="off"
+            >
+
+
+            <datalist id="medicineList">
+
+                <option value="Paracetamol">
+                <option value="Cetirizine">
+                <option value="Ibuprofen">
+                <option value="Azithromycin">
+                <option value="Crocin">
+
+            </datalist>
+
+
+            <button onclick="searchMedicine()">
+                🔎 Search
+            </button>
+
+        </div>
+
+
+        <div id="result"></div>
+
+    </section>
+
+
+    <!-- Features Section -->
+
+    <section class="features">
+
+        <div class="card">
+
+            <h2>
+                🔍 Easy Search
+            </h2>
+
+            <p>
+                Search for the medicine you need in seconds.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                📍 Nearby Pharmacies
+            </h2>
+
+            <p>
+                Find pharmacies where your medicine is available.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                ⚡ Quick Results
+            </h2>
+
+            <p>
+                Get medicine availability information quickly.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- How It Works Section -->
+
+    <section class="how-it-works">
+
+        <h2>
+            How It Works
+        </h2>
+
+
+        <div class="steps">
+
+
+            <div class="step">
+
+                <div class="step-icon">
+                    🔍
+                </div>
+
+                <h3>
+                    1. Search
+                </h3>
+
+                <p>
+                    Enter the name of the medicine you need.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-icon">
+                    📍
+                </div>
+
+                <h3>
+                    2. Find Pharmacy
+                </h3>
+
+                <p>
+                    Check pharmacies where the medicine is available.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-icon">
+                    💊
+                </div>
+
+                <h3>
+                    3. Get Medicine
+                </h3>
+
+                <p>
+                    Visit the pharmacy and get your required medicine.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- About Section -->
+
+    <section class="about" id="about">
+
+        <h2>
+            About MediFind
+        </h2>
+
+        <p>
+            MediFind is a Medicine Availability System designed
+            to help users quickly find medicines available at
+            pharmacies. Instead of visiting multiple pharmacies
+            to check medicine availability, users can search for
+            a medicine online and view its availability, price,
+            quantity, pharmacy and location.
+        </p>
+
+    </section>
+
+
+
+    <!-- Pharmacy Section -->
+
+    <section class="pharmacies">
+
+        <h2>
+            Pharmacies
+        </h2>
+
+        <p class="pharmacy-subtitle">
+            Explore pharmacies where medicines are available.
+        </p>
+
+
+        <div class="pharmacy-container">
+
+
+            <!-- Pharmacy 1 -->
+
+            <div class="pharmacy-card">
+
+                <div class="pharmacy-icon">
+                    🏪
+                </div>
+
+                <h3>
+                    City Care Pharmacy
+                </h3>
+
+                <p>
+                    📍 College Road
+                </p>
+
+                <p>
+                    Check available medicines
+                </p>
+
+                <a
+                    href="pharmacies.html"
+                    class="dashboard-button"
+                >
+                    View Pharmacy
+                </a>
+
+            </div>
+
+
+
+            <!-- Pharmacy 2 -->
+
+            <div class="pharmacy-card">
+
+                <div class="pharmacy-icon">
+                    🏪
+                </div>
+
+                <h3>
+                    Apollo Pharmacy
+                </h3>
+
+                <p>
+                    📍 Nashik Road
+                </p>
+
+                <p>
+                    Check available medicines
+                </p>
+
+                <a
+                    href="pharmacies.html"
+                    class="dashboard-button"
+                >
+                    View Pharmacy
+                </a>
+
+            </div>
+
+
+
+            <!-- Pharmacy 3 -->
+
+            <div class="pharmacy-card">
+
+                <div class="pharmacy-icon">
+                    🏪
+                </div>
+
+                <h3>
+                    Care Medical Store
+                </h3>
+
+                <p>
+                    📍 Gangapur Road
+                </p>
+
+                <p>
+                    Check available medicines
+                </p>
+
+                <a
+                    href="pharmacies.html"
+                    class="dashboard-button"
+                >
+                    View Pharmacy
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- Contact Section -->
+
+    <section class="contact">
+
+        <h2>
+            Need Help?
+        </h2>
+
+        <p>
+            Have questions about medicine availability?
+            Contact us for more information.
+        </p>
+
+
+        <div class="contact-info">
+
+
+            <div>
+
+                <h3>
+                    📞 Contact
+                </h3>
+
+                <p>
+                    +91 98765 43210
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    📧 Email
+                </h3>
+
+                <p>
+                    medifind@example.com
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    📍 Location
+                </h3>
+
+                <p>
+                    Nashik, Maharashtra
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <div class="footer-logo">
+            💊 MediFind
+        </div>
+
+        <p>
+            Medicine Availability System
+        </p>
+
+        <p class="copyright">
+            © 2026 MediFind. All rights reserved.
+        </p>
+
+    </footer>
+
+
+
+    <!-- JavaScript -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

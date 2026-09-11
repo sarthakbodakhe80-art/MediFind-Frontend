@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - MediFind</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav>
+
+            <div class="logo">💊 MediFind</div>
+
+            <div>
+                <a href="index.html">Home</a>
+                <a href="search.html">Search Medicine</a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- Login Section -->
+    <section class="login-section">
+
+        <div class="login-card">
+
+            <div class="login-icon">🔐</div>
+
+            <h1>Welcome to MediFind</h1>
+
+            <p class="login-subtitle">
+                Login to continue
+            </p>
+
+
+            <!-- User Type -->
+            <label for="userType">Login as</label>
+
+            <select id="userType">
+                <option value="customer">👤 Customer</option>
+                <option value="pharmacist">💊 Pharmacist</option>
+            </select>
+
+
+            <!-- Email / Phone -->
+            <label for="loginContact">
+                Email or Phone Number
+            </label>
+
+            <input
+                type="text"
+                id="loginContact"
+                placeholder="Enter email or phone number"
+            >
+
+
+            <!-- Send OTP -->
+            <button class="login-button" onclick="sendOTP()">
+                📱 Send OTP
+            </button>
+
+
+            <p class="login-note">
+                We will send a verification code to your
+                email or phone number.
+            </p>
+
+
+            <p class="signup-text">
+                New to MediFind?
+                <a href="#">Create an account</a>
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-logo">
+            💊 MediFind
+        </div>
+
+        <p>Medicine Availability System</p>
+
+        <p class="copyright">
+            © 2026 MediFind. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

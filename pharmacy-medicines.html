@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pharmacy Medicines - MediFind</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav>
+
+            <div class="logo">💊 MediFind</div>
+
+            <div>
+                <a href="index.html">Home</a>
+                <a href="search.html">Search Medicine</a>
+                <a href="customer.html">Dashboard</a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- Pharmacy Medicines -->
+    <section class="customer-section">
+
+        <div class="customer-header">
+
+            <div class="customer-icon">💊</div>
+
+            <h1 id="pharmacyName">
+                Pharmacy Medicines
+            </h1>
+
+            <p id="pharmacyLocation">
+                Loading medicines...
+            </p>
+
+        </div>
+
+
+        <!-- Medicines -->
+        <div id="medicineList" class="customer-options">
+
+            <p>Loading medicines...</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-logo">
+            💊 MediFind
+        </div>
+
+        <p>Medicine Availability System</p>
+
+        <p class="copyright">
+            © 2026 MediFind. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        // Get pharmacy name from URL
+        const urlParams =
+            new URLSearchParams(window.location.search);
+
+        const pharmacyName =
+            urlParams.get("pharmacy");
+
+
+        // If pharmacy is missing
+        if (!pharmacyName) {
+
+            document.getElementById("pharmacyName")
+                .textContent = "Pharmacy Not Selected";
+
+            document.getElementById("pharmacyLocation")
+                .textContent = "Please select a pharmacy first.";
+
+        }
+        else {
+
+            loadMedicines();
+
+        }
+
+
+        function loadMedicines() {
+
+            fetch("http://localhost:8080/api/medicines")
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error("Failed to load medicines");
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(medicines => {
+
+                    // Find medicines belonging to selected pharmacy
+                    const pharmacyMedicines =
+                        medicines.filter(
+                            medicine =>
+                                medicine.pharmacy === pharmacyName
+                        );
+
+
+                    const medicineList =
+                        document.getElementById("medicineList");
+
+
+                    // Display pharmacy name
+                    document.getElementById("pharmacyName")
+                        .textContent =
+                        "💊 " + pharmacyName;
+
+
+                    if (pharmacyMedicines.length === 0) {
+
+                        medicineList.innerHTML = `
+
+                            <div class="customer-card">
+
+                                <h2>
+                                    No Medicines Found
+                                </h2>
+
+                                <p>
+                                    This pharmacy currently has
+                                    no medicines listed.
+                                </p>
+
+                            </div>
+
+                        `;
+
+                        return;
+                    }
+
+
+                    // Display location
+                    document.getElementById("pharmacyLocation")
+                        .textContent =
+                        "📍 " +
+                        pharmacyMedicines[0].location;
+
+
+                    medicineList.innerHTML = "";
+
+
+                    // Create medicine cards
+                    pharmacyMedicines.forEach(medicine => {
+
+                        const card =
+                            document.createElement("div");
+
+                        card.className =
+                            "customer-card";
+
+
+                        let availability = "";
+
+                        if (medicine.quantity > 0) {
+
+                            availability =
+                                `<span style="color: green;">
+                                    ● Available
+                                </span>`;
+
+                        }
+                        else {
+
+                            availability =
+                                `<span style="color: red;">
+                                    ● Out of Stock
+                                </span>`;
+
+                        }
+
+
+                        card.innerHTML = `
+
+                            <div class="customer-card-icon">
+                                💊
+                            </div>
+
+                            <h2>
+                                ${medicine.name}
+                            </h2>
+
+                            <p>
+                                ${medicine.description || "Medicine"}
+                            </p>
+
+                            <p>
+                                🏭 Manufacturer:
+                                ${medicine.manufacturer || "N/A"}
+                            </p>
+
+                            <p>
+                                💰 Price:
+                                ₹${medicine.price}
+                            </p>
+
+                            <p>
+                                📦 Quantity:
+                                ${medicine.quantity}
+                            </p>
+
+                            <p>
+                                ${availability}
+                            </p>
+
+                        `;
+
+
+                        medicineList.appendChild(card);
+
+                    });
+
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    document.getElementById("medicineList")
+                        .innerHTML = `
+
+                        <div class="customer-card">
+
+                            <h2>
+                                Unable to load medicines
+                            </h2>
+
+                            <p>
+                                Please make sure the
+                                MediFind backend is running.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                });
+
+        }
+
+    </script>
+
+</body>
+
+</html>

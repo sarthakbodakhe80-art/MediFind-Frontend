@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Verify OTP - MediFind</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <nav>
+
+            <div class="logo">💊 MediFind</div>
+
+            <div>
+                <a href="index.html">Home</a>
+                <a href="search.html">Search Medicine</a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <section class="login-section">
+
+        <div class="login-card">
+
+            <div class="login-icon">📱</div>
+
+            <h1>Verify OTP</h1>
+
+            <p class="login-subtitle">
+                Enter the verification code sent to you
+            </p>
+
+
+            <label for="otpInput">
+                Enter OTP
+            </label>
+
+            <input
+                type="text"
+                id="otpInput"
+                placeholder="Enter 6-digit OTP"
+                maxlength="6"
+                inputmode="numeric"
+            >
+
+
+            <button class="login-button" onclick="verifyOTP()">
+                ✅ Verify OTP
+            </button>
+
+
+            <p class="login-note">
+                Didn't receive the code?
+            <a href="#" onclick="resendOTP(); return false;">
+                Resend OTP
+            </a>
+            </p>
+
+
+            <p class="signup-text">
+                <a href="login.html">← Back to Login</a>
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        <div class="footer-logo">
+            💊 MediFind
+        </div>
+
+        <p>Medicine Availability System</p>
+
+        <p class="copyright">
+            © 2026 MediFind. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

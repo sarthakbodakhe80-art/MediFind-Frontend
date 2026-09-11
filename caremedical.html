@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Care Medical Store - MediFind</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<script>
+    fetch("http://localhost:8080/api/medicines")
+        .then(response => response.json())
+        .then(medicines => {
+
+            const medicineList = document.getElementById("medicineList");
+
+            medicineList.innerHTML = "";
+
+            const pharmacyMedicines = medicines.filter(
+                medicine => medicine.pharmacy === "Care Medical Store"
+            );
+
+            if (pharmacyMedicines.length === 0) {
+                medicineList.innerHTML =
+                    "<p>No medicines available at this pharmacy.</p>";
+                return;
+            }
+
+            pharmacyMedicines.forEach(medicine => {
+
+                const status = medicine.quantity > 0 ? "✅" : "❌";
+
+                medicineList.innerHTML += `
+                    <p>
+                        💊 ${medicine.name} —
+                        <strong>${medicine.quantity} tablets</strong>
+                        ${status}
+                    </p>
+                `;
+            });
+        })
+        .catch(error => {
+            console.error("Error:", error);
+
+            document.getElementById("medicineList").innerHTML =
+                "<p>Unable to load medicines.</p>";
+        });
+</script>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav>
+
+            <div class="logo">💊 MediFind</div>
+
+            <div>
+                <a href="index.html">Home</a>
+                <a href="search.html">Search Medicine</a>
+                <a href="index.html">About</a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- Pharmacy Details -->
+    <section class="pharmacy-details">
+
+        <div class="pharmacy-detail-card">
+
+            <div class="large-pharmacy-icon">🏪</div>
+
+            <h1>Care Medical Store</h1>
+
+            <p>📍 Gangapur Road</p>
+
+            <p>📞 +91 91234 56789</p>
+
+            <p>🕒 Open: 8:00 AM - 10:00 PM</p>
+
+            <h2>Available Medicines</h2>
+
+            <div class="medicine-list" id="medicineList">
+    <p>Loading medicines...</p>
+</div>
+            <a href="https://www.google.com/maps/search/?api=1&query=Gangapur+Road"
+   target="_blank"
+   class="back-button">
+    📍 Get Directions
+</a>
+
+            <a href="search.html" class="back-button">
+                ← Back to Search
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-logo">
+            💊 MediFind
+        </div>
+
+        <p>Medicine Availability System</p>
+
+        <p class="copyright">
+            © 2026 MediFind. All rights reserved.
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

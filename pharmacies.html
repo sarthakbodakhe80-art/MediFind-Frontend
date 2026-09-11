@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Find Pharmacy - MediFind</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav>
+
+            <div class="logo">💊 MediFind</div>
+
+            <div>
+                <a href="index.html">Home</a>
+                <a href="search.html">Search Medicine</a>
+                <a href="customer.html">Dashboard</a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- Pharmacy Section -->
+    <section class="customer-section">
+
+        <div class="customer-header">
+
+            <div class="customer-icon">🏪</div>
+
+            <h1>Find Pharmacy</h1>
+
+            <p>
+                Find pharmacies where medicines are available.
+            </p>
+
+        </div>
+
+
+        <!-- Pharmacy List -->
+        <div id="pharmacyList" class="customer-options">
+
+            <p>Loading pharmacies...</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-logo">
+            💊 MediFind
+        </div>
+
+        <p>Medicine Availability System</p>
+
+        <p class="copyright">
+            © 2026 MediFind. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        function loadPharmacies() {
+
+            fetch("http://localhost:8080/api/medicines")
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error("Failed to load pharmacy data");
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(medicines => {
+
+                    const pharmacyList =
+                        document.getElementById("pharmacyList");
+
+                    // Store unique pharmacies
+                    const pharmacies = {};
+
+                    medicines.forEach(medicine => {
+
+                        const pharmacyName =
+                            medicine.pharmacy;
+
+                        if (!pharmacies[pharmacyName]) {
+
+                            pharmacies[pharmacyName] = {
+                                location: medicine.location,
+                                medicines: 0
+                            };
+
+                        }
+
+                        pharmacies[pharmacyName].medicines++;
+
+                    });
+
+
+                    pharmacyList.innerHTML = "";
+
+
+                    Object.keys(pharmacies).forEach(pharmacyName => {
+
+                        const pharmacy =
+                            pharmacies[pharmacyName];
+
+
+                        const card =
+                            document.createElement("div");
+
+                        card.className = "customer-card";
+
+
+                        card.innerHTML = `
+
+                            <div class="customer-card-icon">
+                                🏪
+                            </div>
+
+                            <h2>
+                                ${pharmacyName}
+                            </h2>
+
+                            <p>
+                                📍 ${pharmacy.location}
+                            </p>
+
+                            <p>
+                                💊 ${pharmacy.medicines}
+                                medicine(s) available
+                            </p>
+
+                            <a
+                                href="pharmacy-medicines.html?pharmacy=${encodeURIComponent(pharmacyName)}"
+                                class="dashboard-button">
+                                💊 View Medicines
+                            </a>
+
+                            <br><br>
+
+                            <button
+                                class="dashboard-button"
+                                onclick="getDirections('${pharmacy.location.replace(/'/g, "\\'")}')">
+                                📍 Get Directions
+                            </button>
+
+                        `;
+
+
+                        pharmacyList.appendChild(card);
+
+                    });
+
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    document.getElementById("pharmacyList").innerHTML = `
+
+                        <div class="customer-card">
+
+                            <h2>
+                                Unable to load pharmacies
+                            </h2>
+
+                            <p>
+                                Please make sure the MediFind
+                                backend server is running.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                });
+
+        }
+
+
+        function getDirections(location) {
+
+            const encodedLocation =
+                encodeURIComponent(location);
+
+            window.open(
+                "https://www.google.com/maps/search/?api=1&query="
+                + encodedLocation,
+                "_blank"
+            );
+
+        }
+
+
+        // Load pharmacies
+        loadPharmacies();
+
+    </script>
+
+</body>
+
+</html>

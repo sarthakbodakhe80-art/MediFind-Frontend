@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Panel - MediFind</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav>
+
+            <div class="logo">💊 MediFind</div>
+
+            <div>
+                <a href="index.html">Home</a>
+                <a href="search.html">Search Medicine</a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- Admin Panel -->
+    <section class="admin-section">
+
+        <h1>👨‍💼 Admin Panel</h1>
+
+        <p class="admin-subtitle">
+            Manage medicines and pharmacy stock
+        </p>
+
+
+        <!-- Add Medicine Form -->
+        <div class="admin-card">
+
+            <h2>➕ Add Medicine</h2>
+
+            <div class="form-group">
+
+                <label>Medicine Name</label>
+
+                <input
+                    type="text"
+                    id="medicineName"
+                    placeholder="Enter medicine name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Pharmacy</label>
+
+                <input
+                    type="text"
+                    id="pharmacyName"
+                    placeholder="Enter pharmacy name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Available Stock</label>
+
+                <input
+                    type="number"
+                    id="medicineStock"
+                    placeholder="Enter stock quantity"
+                >
+
+            </div>
+
+
+            <button class="admin-button" onclick="addMedicine()">
+                ➕ Add Medicine
+            </button>
+
+        </div>
+
+
+        <!-- Medicine List -->
+        <div class="admin-card">
+
+            <h2>📦 Medicine Stock</h2>
+
+            <div id="adminMedicineList">
+
+                <div class="admin-medicine">
+                    <div>
+                        <strong>Paracetamol</strong>
+                        <p>City Care Pharmacy</p>
+                    </div>
+
+                    <span>25 tablets</span>
+                </div>
+
+
+                <div class="admin-medicine">
+                    <div>
+                        <strong>Cetirizine</strong>
+                        <p>Health Plus Pharmacy</p>
+                    </div>
+
+                    <span>15 tablets</span>
+                </div>
+
+
+                <div class="admin-medicine">
+                    <div>
+                        <strong>Ibuprofen</strong>
+                        <p>City Care Pharmacy</p>
+                    </div>
+
+                    <span>0 tablets</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-logo">
+            💊 MediFind
+        </div>
+
+        <p>Medicine Availability System</p>
+
+        <p class="copyright">
+            © 2026 MediFind. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Search Medicine - MediFind</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <nav>
+
+            <div class="logo">💊 MediFind</div>
+
+            <div>
+                <a href="index.html">Home</a>
+                <a href="search.html">Search Medicine</a>
+                <a href="customer.html">Dashboard</a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- Search Section -->
+    <section class="hero">
+
+        <h1>Search Medicine</h1>
+
+        <p>
+            Search for a medicine and find pharmacies where it is available.
+        </p>
+
+
+        <!-- Search Box -->
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="medicineInput"
+                placeholder="Enter medicine name..."
+                list="medicineList"
+                autocomplete="off"
+            >
+
+            <datalist id="medicineList">
+                <option value="Paracetamol">
+                <option value="Cetirizine">
+                <option value="Ibuprofen">
+                <option value="Azithromycin">
+                <option value="Crocin">
+            </datalist>
+
+
+            <button onclick="searchMedicine()">
+                🔎 Search
+            </button>
+
+        </div>
+
+
+        <!-- Search Results -->
+        <div id="result"></div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-logo">
+            💊 MediFind
+        </div>
+
+        <p>
+            Medicine Availability System
+        </p>
+
+        <p class="copyright">
+            © 2026 MediFind. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "Test Medicine",
+  "description": "Test medicine",
+  "manufacturer": "Test Pharma",
+  "price": 50.0,
+  "quantity": 20,
+  "pharmacy": "Test Pharmacy",
+  "location": "Nashik"
+}

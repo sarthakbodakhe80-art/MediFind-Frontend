@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pharmacist Dashboard - MediFind</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <nav>
+
+        <div class="logo">
+            💊 MediFind
+        </div>
+
+        <div>
+
+            <a href="index.html">Home</a>
+
+            <a href="search.html">Search Medicine</a>
+
+            <a href="pharmacist.html">Dashboard</a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<section class="pharmacist-section">
+
+    <div class="pharmacist-header">
+
+        <div class="pharmacist-icon">
+            💊
+        </div>
+
+        <h1>
+            Pharmacist Dashboard
+        </h1>
+
+        <p>
+            Manage your pharmacy and medicine inventory.
+        </p>
+
+    </div>
+
+
+    <!-- Pharmacy Profile -->
+
+    <div class="pharmacy-profile">
+
+        <h2>
+            🏪 My Pharmacy
+        </h2>
+
+        <p>
+            <strong>Pharmacy:</strong>
+            City Care Pharmacy
+        </p>
+
+        <p>
+            <strong>Location:</strong>
+            College Road
+        </p>
+
+        <p>
+            <strong>Contact:</strong>
+            +91 98765 43210
+        </p>
+
+    </div>
+
+
+    <!-- Dashboard Options -->
+
+    <div class="pharmacist-options">
+
+
+        <!-- Add Medicine -->
+
+        <div class="pharmacist-card">
+
+            <div class="pharmacist-card-icon">
+                ➕
+            </div>
+
+            <h2>
+                Add Medicine
+            </h2>
+
+            <p>
+                Add a new medicine to your pharmacy inventory.
+            </p>
+
+            <button
+                class="dashboard-button"
+                onclick="addMedicine()">
+
+                Add Medicine
+
+            </button>
+
+        </div>
+
+
+        <!-- Manage Stock -->
+
+        <div class="pharmacist-card">
+
+            <div class="pharmacist-card-icon">
+                📦
+            </div>
+
+            <h2>
+                Manage Stock
+            </h2>
+
+            <p>
+                Check and update available medicine stock.
+            </p>
+
+            <button
+                class="dashboard-button"
+                onclick="manageStock()">
+
+                Manage Stock
+
+            </button>
+
+        </div>
+
+
+        <!-- Inventory -->
+
+        <div class="pharmacist-card">
+
+            <div class="pharmacist-card-icon">
+                📊
+            </div>
+
+            <h2>
+                Inventory
+            </h2>
+
+            <p>
+                View all medicines currently available.
+            </p>
+
+            <button
+                class="dashboard-button"
+                onclick="viewInventory()">
+
+                View Inventory
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- Current Stock -->
+
+    <div
+        class="pharmacist-stock"
+        id="inventorySection">
+
+        <h2>
+            📦 Current Stock
+        </h2>
+
+        <div id="stockList">
+
+            <p>
+                Loading inventory...
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Footer -->
+
+<footer>
+
+    <div class="footer-logo">
+        💊 MediFind
+    </div>
+
+    <p>
+        Medicine Availability System
+    </p>
+
+    <p class="copyright">
+        © 2026 MediFind. All rights reserved.
+    </p>
+
+</footer>
+
+
+<script>
+
+
+/* =========================
+   PHARMACIST LOGIN CHECK
+========================= */
+
+const userType = localStorage.getItem("userType");
+const userId = localStorage.getItem("userId");
+
+if (userType !== "pharmacist" || !userId) {
+
+    alert("Please login as a pharmacist first.");
+
+    window.location.href = "login.html";
+
+}
+
+
+/* =========================
+   ADD MEDICINE
+========================= */
+
+function addMedicine() {
+
+    const name =
+        prompt("Enter medicine name:");
+
+    if (!name) return;
+
+
+    const description =
+        prompt("Enter description:");
+
+    if (!description) return;
+
+
+    const manufacturer =
+        prompt("Enter manufacturer:");
+
+    if (!manufacturer) return;
+
+
+    const price =
+        prompt("Enter price:");
+
+    if (!price) return;
+
+
+    const quantity =
+        prompt("Enter quantity:");
+
+    if (!quantity) return;
+
+
+    const pharmacy =
+        prompt("Enter pharmacy name:");
+
+    if (!pharmacy) return;
+
+
+    const pharmacyLocation =
+        prompt("Enter pharmacy location:");
+
+    if (!pharmacyLocation) return;
+
+
+    const medicine = {
+
+        name: name,
+
+        description: description,
+
+        manufacturer: manufacturer,
+
+        price: parseFloat(price),
+
+        quantity: parseInt(quantity),
+
+        pharmacy: pharmacy,
+
+        location: pharmacyLocation
+
+    };
+
+
+    fetch(
+        "http://localhost:8080/api/medicines",
+        {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(medicine)
+
+        }
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to add medicine"
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        alert(
+            "Medicine added successfully! ✅"
+        );
+
+        loadInventory();
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert(
+            "Unable to add medicine."
+        );
+
+    });
+
+}
+
+
+/* =========================
+   LOAD INVENTORY
+========================= */
+
+function loadInventory() {
+
+    const stockList =
+        document.getElementById("stockList");
+
+
+    stockList.innerHTML =
+        "<p>Loading inventory...</p>";
+
+
+    fetch(
+        "http://localhost:8080/api/medicines"
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load inventory"
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(medicines => {
+
+        if (medicines.length === 0) {
+
+            stockList.innerHTML =
+                "<p>No medicines in inventory.</p>";
+
+            return;
+
+        }
+
+
+        stockList.innerHTML = "";
+
+
+        medicines.forEach(medicine => {
+
+
+            const status =
+                medicine.quantity > 0
+                    ? "✅ Available"
+                    : "❌ Out of Stock";
+
+
+            stockList.innerHTML += `
+
+                <div class="stock-row">
+
+                    <strong>
+                        ${medicine.name}
+                    </strong>
+
+                    <br>
+
+                    Pharmacy:
+                    ${medicine.pharmacy}
+
+                    <br>
+
+                    Location:
+                    ${medicine.location}
+
+                    <br><br>
+
+
+                    Quantity:
+
+                    <input
+                        type="number"
+                        id="quantity-${medicine.id}"
+                        value="${medicine.quantity}"
+                        min="0"
+                        style="width:80px;"
+                    >
+
+
+                    &nbsp;
+
+
+                    Price: ₹
+
+                    <input
+                        type="number"
+                        id="price-${medicine.id}"
+                        value="${medicine.price}"
+                        min="0"
+                        step="0.01"
+                        style="width:80px;"
+                    >
+
+
+                    <br><br>
+
+
+                    <button
+                        onclick="updateMedicine(${medicine.id})">
+
+                        💾 Save
+
+                    </button>
+
+
+                    <button
+                        onclick="deleteMedicine(${medicine.id})">
+
+                        🗑️ Delete
+
+                    </button>
+
+
+                    <br><br>
+
+                    ${status}
+
+                </div>
+
+                <hr>
+
+            `;
+
+        });
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        stockList.innerHTML = `
+
+            <p>
+                Unable to load inventory.
+            </p>
+
+            <p>
+                Please make sure the backend is running.
+            </p>
+
+        `;
+
+    });
+
+}
+
+
+/* =========================
+   UPDATE MEDICINE
+========================= */
+
+function updateMedicine(id) {
+
+
+    const quantityInput =
+        document.getElementById(
+            "quantity-" + id
+        );
+
+
+    const priceInput =
+        document.getElementById(
+            "price-" + id
+        );
+
+
+    const newQuantity =
+        parseInt(quantityInput.value);
+
+
+    const newPrice =
+        parseFloat(priceInput.value);
+
+
+    if (
+        isNaN(newQuantity) ||
+        newQuantity < 0
+    ) {
+
+        alert(
+            "Please enter a valid quantity."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        isNaN(newPrice) ||
+        newPrice < 0
+    ) {
+
+        alert(
+            "Please enter a valid price."
+        );
+
+        return;
+
+    }
+
+
+    fetch(
+        "http://localhost:8080/api/medicines/" + id
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Medicine not found"
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(medicine => {
+
+
+        medicine.quantity =
+            newQuantity;
+
+
+        medicine.price =
+            newPrice;
+
+
+        return fetch(
+
+            "http://localhost:8080/api/medicines/" + id,
+
+            {
+
+                method: "PUT",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body:
+                    JSON.stringify(medicine)
+
+            }
+
+        );
+
+    })
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to update medicine"
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        alert(
+            "Medicine updated successfully! ✅"
+        );
+
+        loadInventory();
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert(
+            "Unable to update medicine."
+        );
+
+    });
+
+}
+
+
+/* =========================
+   DELETE MEDICINE
+========================= */
+
+function deleteMedicine(id) {
+
+
+    const confirmation =
+        confirm(
+            "Are you sure you want to delete this medicine?"
+        );
+
+
+    if (!confirmation) return;
+
+
+    fetch(
+        "http://localhost:8080/api/medicines/" + id,
+        {
+
+            method: "DELETE"
+
+        }
+
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to delete medicine"
+            );
+
+        }
+
+
+        alert(
+            "Medicine deleted successfully! ✅"
+        );
+
+
+        loadInventory();
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert(
+            "Unable to delete medicine."
+        );
+
+    });
+
+}
+
+
+/* =========================
+   MANAGE STOCK
+========================= */
+
+function manageStock() {
+
+    const stockList =
+        document.getElementById(
+            "stockList"
+        );
+
+
+    stockList.scrollIntoView({
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+/* =========================
+   VIEW INVENTORY
+========================= */
+
+function viewInventory() {
+
+    const inventorySection =
+        document.getElementById(
+            "inventorySection"
+        );
+
+
+    inventorySection.scrollIntoView({
+
+        behavior: "smooth"
+
+    });
+
+}
+
+
+/* =========================
+   START INVENTORY
+========================= */
+
+if (userType === "pharmacist" && userId) {
+
+    loadInventory();
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
