@@ -2,8 +2,7 @@
 // MediFind Backend URL
 // ===============================
 
-const API_BASE_URL = "https://medifind-backend-hlgq.onrender.com";
-
+const API_BASE_URL = "https://medifind-backend-9fqk.onrender.com";
 
 // ===============================
 // Search Medicine
