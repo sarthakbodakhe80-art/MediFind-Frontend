@@ -227,6 +227,9 @@ const API_BASE_URL =
    PHARMACIST LOGIN CHECK
 ========================= */
 
+const isLoggedIn =
+    localStorage.getItem("isLoggedIn");
+
 const userType =
     localStorage.getItem("userType");
 
@@ -234,14 +237,33 @@ const loginEmail =
     localStorage.getItem("loginEmail");
 
 
-if (userType !== "pharmacist" || !loginEmail) {
+console.log("PHARMACIST PAGE CHECK");
+console.log("Logged In:", isLoggedIn);
+console.log("Email:", loginEmail);
+console.log("User Type:", userType);
+
+
+/*
+ * Pharmacist is allowed only when:
+ *
+ * 1. isLoggedIn = true
+ * 2. loginEmail exists
+ * 3. userType = pharmacist
+ */
+
+if (
+    isLoggedIn !== "true" ||
+    !loginEmail ||
+    userType !== "pharmacist"
+) {
 
     alert(
         "Please login as a pharmacist first."
     );
 
-    window.location.href =
-        "login.html";
+    window.location.replace(
+        "login.html"
+    );
 
 }
 
@@ -790,6 +812,7 @@ function viewInventory() {
 ========================= */
 
 if (
+    isLoggedIn === "true" &&
     userType === "pharmacist" &&
     loginEmail
 ) {

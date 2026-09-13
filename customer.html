@@ -116,32 +116,49 @@
 
     <script>
 
+        /* =========================
+           CUSTOMER LOGIN CHECK
+        ========================= */
+
+        const isLoggedIn =
+            localStorage.getItem("isLoggedIn");
+
         const loginEmail =
             localStorage.getItem("loginEmail");
 
         const userType =
             localStorage.getItem("userType");
 
+
         console.log("CUSTOMER PAGE CHECK");
+        console.log("Logged In:", isLoggedIn);
         console.log("Email:", loginEmail);
         console.log("User Type:", userType);
 
+
         /*
-         * Customer is allowed when:
-         * 1. Email exists
-         * 2. User type is customer
+         * Customer is allowed only when:
          *
-         * isLoggedIn is NOT required because
-         * your backend OTP verification already succeeded.
+         * 1. isLoggedIn = true
+         * 2. loginEmail exists
+         * 3. userType = customer
          */
 
-        if (!loginEmail || userType !== "customer") {
+        if (
+            isLoggedIn !== "true" ||
+            !loginEmail ||
+            userType !== "customer"
+        ) {
 
-            alert("Please login first.");
+            alert("Please login as a customer first.");
 
             window.location.replace("login.html");
 
         } else {
+
+            /* =========================
+               SHOW CUSTOMER NAME
+            ========================= */
 
             const userName =
                 localStorage.getItem("userName");
@@ -149,7 +166,9 @@
             if (userName) {
 
                 const heading =
-                    document.querySelector(".customer-header h1");
+                    document.querySelector(
+                        ".customer-header h1"
+                    );
 
                 heading.textContent =
                     `Welcome, ${userName} 👋`;
