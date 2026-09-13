@@ -216,17 +216,32 @@
 
 
 /* =========================
+   LIVE BACKEND
+========================= */
+
+const API_BASE_URL =
+    "https://medifind-backend-9fqk.onrender.com";
+
+
+/* =========================
    PHARMACIST LOGIN CHECK
 ========================= */
 
-const userType = localStorage.getItem("userType");
-const userId = localStorage.getItem("userId");
+const userType =
+    localStorage.getItem("userType");
 
-if (userType !== "pharmacist" || !userId) {
+const loginEmail =
+    localStorage.getItem("loginEmail");
 
-    alert("Please login as a pharmacist first.");
 
-    window.location.href = "login.html";
+if (userType !== "pharmacist" || !loginEmail) {
+
+    alert(
+        "Please login as a pharmacist first."
+    );
+
+    window.location.href =
+        "login.html";
 
 }
 
@@ -299,7 +314,7 @@ function addMedicine() {
 
 
     fetch(
-        "http://localhost:8080/api/medicines",
+        `${API_BASE_URL}/api/medicines`,
         {
 
             method: "POST",
@@ -308,7 +323,8 @@ function addMedicine() {
                 "Content-Type": "application/json"
             },
 
-            body: JSON.stringify(medicine)
+            body:
+                JSON.stringify(medicine)
 
         }
     )
@@ -339,7 +355,10 @@ function addMedicine() {
 
     .catch(error => {
 
-        console.error(error);
+        console.error(
+            "ADD MEDICINE ERROR:",
+            error
+        );
 
         alert(
             "Unable to add medicine."
@@ -357,7 +376,9 @@ function addMedicine() {
 function loadInventory() {
 
     const stockList =
-        document.getElementById("stockList");
+        document.getElementById(
+            "stockList"
+        );
 
 
     stockList.innerHTML =
@@ -365,7 +386,7 @@ function loadInventory() {
 
 
     fetch(
-        "http://localhost:8080/api/medicines"
+        `${API_BASE_URL}/api/medicines`
     )
 
     .then(response => {
@@ -384,7 +405,8 @@ function loadInventory() {
 
     .then(medicines => {
 
-        if (medicines.length === 0) {
+        if (!medicines ||
+            medicines.length === 0) {
 
             stockList.innerHTML =
                 "<p>No medicines in inventory.</p>";
@@ -397,98 +419,102 @@ function loadInventory() {
         stockList.innerHTML = "";
 
 
-        medicines.forEach(medicine => {
+        medicines.forEach(
+            medicine => {
+
+                const status =
+                    medicine.quantity > 0
+                        ? "✅ Available"
+                        : "❌ Out of Stock";
 
 
-            const status =
-                medicine.quantity > 0
-                    ? "✅ Available"
-                    : "❌ Out of Stock";
+                stockList.innerHTML += `
+
+                    <div class="stock-row">
+
+                        <strong>
+                            ${medicine.name}
+                        </strong>
+
+                        <br>
+
+                        Pharmacy:
+                        ${medicine.pharmacy}
+
+                        <br>
+
+                        Location:
+                        ${medicine.location}
+
+                        <br><br>
 
 
-            stockList.innerHTML += `
+                        Quantity:
 
-                <div class="stock-row">
-
-                    <strong>
-                        ${medicine.name}
-                    </strong>
-
-                    <br>
-
-                    Pharmacy:
-                    ${medicine.pharmacy}
-
-                    <br>
-
-                    Location:
-                    ${medicine.location}
-
-                    <br><br>
+                        <input
+                            type="number"
+                            id="quantity-${medicine.id}"
+                            value="${medicine.quantity}"
+                            min="0"
+                            style="width:80px;"
+                        >
 
 
-                    Quantity:
-
-                    <input
-                        type="number"
-                        id="quantity-${medicine.id}"
-                        value="${medicine.quantity}"
-                        min="0"
-                        style="width:80px;"
-                    >
+                        &nbsp;
 
 
-                    &nbsp;
+                        Price: ₹
+
+                        <input
+                            type="number"
+                            id="price-${medicine.id}"
+                            value="${medicine.price}"
+                            min="0"
+                            step="0.01"
+                            style="width:80px;"
+                        >
 
 
-                    Price: ₹
-
-                    <input
-                        type="number"
-                        id="price-${medicine.id}"
-                        value="${medicine.price}"
-                        min="0"
-                        step="0.01"
-                        style="width:80px;"
-                    >
+                        <br><br>
 
 
-                    <br><br>
+                        <button
+                            onclick="updateMedicine(${medicine.id})">
+
+                            💾 Save
+
+                        </button>
 
 
-                    <button
-                        onclick="updateMedicine(${medicine.id})">
+                        <button
+                            onclick="deleteMedicine(${medicine.id})">
 
-                        💾 Save
+                            🗑️ Delete
 
-                    </button>
-
-
-                    <button
-                        onclick="deleteMedicine(${medicine.id})">
-
-                        🗑️ Delete
-
-                    </button>
+                        </button>
 
 
-                    <br><br>
+                        <br><br>
 
-                    ${status}
+                        ${status}
 
-                </div>
+                    </div>
 
-                <hr>
+                    <hr>
 
-            `;
+                `;
 
-        });
+            }
+        );
 
     })
 
     .catch(error => {
 
-        console.error(error);
+        console.error(
+            "LOAD INVENTORY ERROR:",
+            error
+        );
 
         stockList.innerHTML = `
 
@@ -497,7 +523,7 @@ function loadInventory() {
             </p>
 
             <p>
-                Please make sure the backend is running.
+                Please try again.
             </p>
 
         `;
@@ -513,7 +539,6 @@ function loadInventory() {
 
 function updateMedicine(id) {
 
-
     const quantityInput =
         document.getElementById(
             "quantity-" + id
@@ -527,11 +552,15 @@ function updateMedicine(id) {
 
 
     const newQuantity =
-        parseInt(quantityInput.value);
+        parseInt(
+            quantityInput.value
+        );
 
 
     const newPrice =
-        parseFloat(priceInput.value);
+        parseFloat(
+            priceInput.value
+        );
 
 
     if (
@@ -563,7 +592,7 @@ function updateMedicine(id) {
 
 
     fetch(
-        "http://localhost:8080/api/medicines/" + id
+        `${API_BASE_URL}/api/medicines/${id}`
     )
 
     .then(response => {
@@ -582,10 +611,8 @@ function updateMedicine(id) {
 
     .then(medicine => {
 
-
         medicine.quantity =
             newQuantity;
-
 
         medicine.price =
             newPrice;
@@ -593,7 +620,7 @@ function updateMedicine(id) {
 
         return fetch(
 
-            "http://localhost:8080/api/medicines/" + id,
+            `${API_BASE_URL}/api/medicines/${id}`,
 
             {
 
@@ -641,7 +668,10 @@ function updateMedicine(id) {
 
     .catch(error => {
 
-        console.error(error);
+        console.error(
+            "UPDATE MEDICINE ERROR:",
+            error
+        );
 
         alert(
             "Unable to update medicine."
@@ -658,7 +688,6 @@ function updateMedicine(id) {
 
 function deleteMedicine(id) {
 
-
     const confirmation =
         confirm(
             "Are you sure you want to delete this medicine?"
@@ -669,7 +698,7 @@ function deleteMedicine(id) {
 
 
     fetch(
-        "http://localhost:8080/api/medicines/" + id,
+        `${API_BASE_URL}/api/medicines/${id}`,
         {
 
             method: "DELETE"
@@ -700,7 +729,10 @@ function deleteMedicine(id) {
 
     .catch(error => {
 
-        console.error(error);
+        console.error(
+            "DELETE MEDICINE ERROR:",
+            error
+        );
 
         alert(
             "Unable to delete medicine."
@@ -757,7 +789,10 @@ function viewInventory() {
    START INVENTORY
 ========================= */
 
-if (userType === "pharmacist" && userId) {
+if (
+    userType === "pharmacist" &&
+    loginEmail
+) {
 
     loadInventory();
 
