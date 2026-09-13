@@ -241,51 +241,49 @@ function searchMedicine() {
 
 function sendOTP() {
 
-    const contact =
-        document.getElementById("loginContact");
-
-    const selectedType =
-        document.getElementById("userType").value;
+    const contact = document.getElementById("loginContact");
+    const selectedType = document.getElementById("userType").value;
 
     if (!contact) {
-
         alert("Login form not found.");
         return;
     }
 
-    const email =
-        contact.value.trim();
+    const email = contact.value.trim().toLowerCase();
 
     if (email === "") {
-
         alert("Please enter your email address.");
         return;
     }
 
     // Validate email
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-
         alert("Please enter a valid email address.");
         return;
     }
 
-    // Convert login type to database role
+    // Convert frontend type to database role
     const role =
         selectedType === "customer"
             ? "USER"
             : "PHARMACIST";
 
-    // LIVE Render backend
     const url =
         `${API_BASE_URL}/api/otp/send?email=${encodeURIComponent(email)}&role=${encodeURIComponent(role)}`;
+
+    console.log("LOGIN EMAIL:", email);
+    console.log("LOGIN TYPE:", selectedType);
+    console.log("DATABASE ROLE:", role);
 
     fetch(url, {
         method: "POST"
     })
-
     .then(response => response.text())
-
     .then(result => {
+
+        result = result.trim();
+
+        console.log("OTP SEND RESULT:", result);
 
         if (result === "USER_NOT_FOUND") {
 
@@ -295,8 +293,20 @@ function sendOTP() {
 
         if (result === "OTP_SENT") {
 
+            // Store login information
             localStorage.setItem("loginEmail", email);
             localStorage.setItem("userType", selectedType);
+            localStorage.setItem("isLoggedIn", "false");
+
+            console.log(
+                "SAVED LOGIN EMAIL:",
+                localStorage.getItem("loginEmail")
+            );
+
+            console.log(
+                "SAVED USER TYPE:",
+                localStorage.getItem("userType")
+            );
 
             alert("OTP sent to your email! 📧");
 
@@ -307,7 +317,6 @@ function sendOTP() {
 
         alert("Unable to send OTP. Please try again.");
     })
-
     .catch(error => {
 
         console.error("OTP error:", error);
@@ -315,7 +324,6 @@ function sendOTP() {
         alert("Cannot connect to MediFind server.");
     });
 }
-
 
 // ===============================
 // Resend Email OTP
@@ -388,28 +396,21 @@ function resendOTP() {
 
 function verifyOTP() {
 
-    const otpInput =
-        document.getElementById("otpInput");
+    const otpInput = document.getElementById("otpInput");
 
     if (!otpInput) {
-
         alert("OTP input not found.");
         return;
     }
 
-    const otp =
-        otpInput.value.trim();
+    const otp = otpInput.value.trim();
 
-    const email =
-        localStorage.getItem("loginEmail");
-
-    const userType =
-        localStorage.getItem("userType");
+    const email = localStorage.getItem("loginEmail");
+    const userType = localStorage.getItem("userType");
 
     if (!email || !userType) {
 
         alert("Login session not found. Please login again.");
-
         window.location.href = "login.html";
 
         return;
@@ -427,33 +428,38 @@ function verifyOTP() {
         return;
     }
 
-    // LIVE Render backend
     const url =
         `${API_BASE_URL}/api/otp/verify?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`;
 
     fetch(url, {
         method: "POST"
     })
-
     .then(response => response.text())
-
     .then(result => {
 
-        if (result === "OTP_VERIFIED") {
+        result = result.trim();
 
-            alert("OTP verified successfully! ✅");
+        console.log("OTP VERIFY RESULT:", result);
 
-            if (userType === "pharmacist") {
+if (result === "OTP_VERIFIED") {
 
-                window.location.href = "pharmacist.html";
+    const savedEmail = email.toLowerCase();
+    const savedUserType = userType.toLowerCase();
 
-            } else {
+    localStorage.setItem("loginEmail", savedEmail);
+    localStorage.setItem("userType", savedUserType);
+    localStorage.setItem("isLoggedIn", "true");
 
-                window.location.href = "customer.html";
-            }
+    alert("OTP verified successfully! ✅");
 
-            return;
-        }
+    if (savedUserType === "pharmacist") {
+        window.location.href = "pharmacist.html";
+    } else {
+        window.location.href = "customer.html";
+    }
+
+    return;
+}
 
         if (result === "INVALID_OTP") {
 
@@ -465,6 +471,10 @@ function verifyOTP() {
 
             alert("OTP has expired. Please login again.");
 
+            localStorage.removeItem("loginEmail");
+            localStorage.removeItem("userType");
+            localStorage.removeItem("isLoggedIn");
+
             window.location.href = "login.html";
 
             return;
@@ -473,13 +483,19 @@ function verifyOTP() {
         if (result === "OTP_NOT_FOUND") {
 
             alert("OTP not found. Please request a new OTP.");
-
             return;
         }
 
+        if (result === "USER_NOT_FOUND") {
+
+            alert("User not found. Please check your email and role.");
+            return;
+        }
+
+        console.error("Unexpected OTP response:", result);
+
         alert("OTP verification failed.");
     })
-
     .catch(error => {
 
         console.error("OTP verification error:", error);

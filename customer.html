@@ -12,7 +12,6 @@
 
 <body>
 
-    <!-- Navigation -->
     <header>
         <nav>
 
@@ -28,7 +27,6 @@
     </header>
 
 
-    <!-- Customer Dashboard -->
     <section class="customer-section">
 
         <div class="customer-header">
@@ -44,11 +42,8 @@
         </div>
 
 
-        <!-- Dashboard Options -->
         <div class="customer-options">
 
-
-            <!-- Search Medicine -->
             <div class="customer-card">
 
                 <div class="customer-card-icon">🔎</div>
@@ -66,7 +61,6 @@
             </div>
 
 
-            <!-- Find Pharmacy -->
             <div class="customer-card">
 
                 <div class="customer-card-icon">🏪</div>
@@ -84,7 +78,6 @@
             </div>
 
 
-            <!-- Get Directions -->
             <div class="customer-card">
 
                 <div class="customer-card-icon">📍</div>
@@ -101,13 +94,11 @@
 
             </div>
 
-
         </div>
 
     </section>
 
 
-    <!-- Footer -->
     <footer>
 
         <div class="footer-logo">
@@ -123,36 +114,51 @@
     </footer>
 
 
-    <!-- Customer Name -->
-<script>
+    <script>
 
-    // Check if customer has successfully logged in
-    const userType = localStorage.getItem("userType");
-    const userId = localStorage.getItem("userId");
+        const loginEmail =
+            localStorage.getItem("loginEmail");
 
-    if (userType !== "customer" || !userId) {
+        const userType =
+            localStorage.getItem("userType");
 
-        alert("Please login first.");
+        console.log("CUSTOMER PAGE CHECK");
+        console.log("Email:", loginEmail);
+        console.log("User Type:", userType);
 
-        window.location.href = "login.html";
+        /*
+         * Customer is allowed when:
+         * 1. Email exists
+         * 2. User type is customer
+         *
+         * isLoggedIn is NOT required because
+         * your backend OTP verification already succeeded.
+         */
 
-    } else {
+        if (!loginEmail || userType !== "customer") {
 
-        const userName = localStorage.getItem("userName");
+            alert("Please login first.");
 
-        if (userName) {
+            window.location.replace("login.html");
 
-            const heading =
-                document.querySelector(".customer-header h1");
+        } else {
 
-            heading.textContent =
-                `Welcome, ${userName} 👋`;
+            const userName =
+                localStorage.getItem("userName");
+
+            if (userName) {
+
+                const heading =
+                    document.querySelector(".customer-header h1");
+
+                heading.textContent =
+                    `Welcome, ${userName} 👋`;
+
+            }
 
         }
 
-    }
-
-</script>
+    </script>
 
 </body>
 
